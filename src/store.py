@@ -15,7 +15,6 @@ def create_database(cursor):
 
 
 
-
 def store_properties(properties):
     conn = connect_db()
     if conn is None:
@@ -72,3 +71,59 @@ def preprocess_price(price_str):
         return price
     else:
         return None
+
+
+
+
+def store_presidents(presidents):
+    conn = connect_db()
+    if conn is None:
+        print("Failed to connect to the database. Exiting.")
+        return
+
+    cursor = conn.cursor()
+
+    try:
+        create_database(cursor)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS presidents (
+                id SERIAL PRIMARY KEY,
+                Name VARCHAR(255),
+                Dates VARCHAR(255),
+                Nationality VARCHAR(255),
+                Previouswork VARCHAR(255)
+            )
+        """)
+        print("Table 'presidents' created or already exists")
+
+        sample = []
+
+        for prop in presidents:
+            # print("prop",prop)
+            if prop == presidents[0]:
+                continue
+            name, dates, nationality, previous_work = prop
+            
+            sample.append({"name": name, "dates": dates, "nationality": nationality, "previous_work": previous_work})  # Option 2: Dictionary
+
+        # print(sample)
+                        
+        for i in sample:    
+            cursor.execute("""
+                INSERT INTO presidents (Name, Dates, Nationality, previouswork)
+                VALUES (%s, %s, %s, %s)
+                    """, (
+                    i['name'], i['dates'], i['nationality'],
+                    i['previous_work']
+                ))
+        conn.commit()
+        print("Presidents have been successfully stored in the database")
+
+    except psycopg2.Error as e:
+        print(f"Error: {e}")
+
+    finally:
+        cursor.close()
+        conn.close()
+    
