@@ -28,3 +28,39 @@ def scrape_properties():
         })
 
     return properties
+
+
+
+def scrape_worldbank():
+    url = "https://en.wikipedia.org/wiki/World_Bank"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # print(soup)
+    presidents = []
+    
+    table = soup.find('table', {'class': 'wikitable'})
+    
+    # print(table)
+    
+    rows = table.find_all('tr')
+
+
+    headers = [header.text.strip() for header in rows[0].find_all('th')]
+
+
+    presidents.append(headers)
+        
+    for row in rows[1:]:
+        columns = row.find_all('td')
+        columns_data = [column.text.strip() for column in columns]
+        presidents.append(columns_data)
+        
+    for president in presidents:
+        print(president)
+
+
+    return presidents
