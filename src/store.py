@@ -105,7 +105,7 @@ def store_presidents(presidents):
                 continue
             name, dates, nationality, previous_work = prop
             
-            sample.append({"name": name, "dates": dates, "nationality": nationality, "previous_work": previous_work})  # Option 2: Dictionary
+            sample.append({"name": name, "dates": dates, "nationality": nationality, "previous_work": previous_work})  
 
         # print(sample)
                         

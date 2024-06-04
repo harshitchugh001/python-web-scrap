@@ -4,17 +4,28 @@ from src.export import generate_csv, generate_csv_presidents
 from src.scrape import scrape_worldbank
 from src.crud import insert_property, delete_property, update_property, read_properties
 
+# main function 
 def main():
-    properties = scrape_properties()  
+    
+    # scrap properties from magic bricks cards
+    properties = scrape_properties()
+      
+    # print properties
+    
     for property in properties:
         print(property)
-    
+        
+    # scrap properties from table
     presidents = scrape_worldbank()
     
+    # print presidents
     for president in presidents:
         print(president)
            
+    #store presidents 
     store_presidents(presidents)
+    
+    # store properties
     store_properties(properties)  
     generate_csv() 
     generate_csv_presidents()
